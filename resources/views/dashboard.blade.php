@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Cash reconciliation dashboard')
 
 @section('content')
-    <div class="mb-8 flex items-center justify-between">
-        <h1 class="text-2xl font-bold">Dashboard</h1>
+    <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold">Cash reconciliation</h1>
+            <p class="text-sm text-gray-500">Expected vs actual cash by shift — spot mismatches and hold staff accountable.</p>
+        </div>
         <form method="get" action="{{ route('dashboard') }}" class="flex gap-2">
             <input type="date" name="from" value="{{ $from->format('Y-m-d') }}" class="rounded border-gray-300">
             <input type="date" name="to" value="{{ $to->format('Y-m-d') }}" class="rounded border-gray-300">

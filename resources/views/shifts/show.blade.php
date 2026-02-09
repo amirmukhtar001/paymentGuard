@@ -15,32 +15,34 @@
         </div>
     </div>
 
-    {{-- POS entry --}}
+    {{-- Expected cash (from your POS or manual total) — we are NOT a POS, we reconcile what the POS says vs what was counted --}}
     <section class="mb-8 rounded-lg border bg-white p-4 shadow-sm">
-        <h2 class="mb-4 font-semibold">POS sales (expected cash)</h2>
+        <h2 class="mb-4 font-semibold">Expected cash</h2>
+        <p class="mb-2 text-sm text-gray-500">Enter the cash sales total from your existing POS (or manual total). This is what the till should have.</p>
         @if($shift->posSalesRecord)
-            <p class="mb-2">Net cash sales: <strong>{{ number_format($shift->posSalesRecord->net_cash_sales, 2) }} {{ $shift->posSalesRecord->currency }}</strong></p>
+            <p class="mb-2">Expected amount: <strong>{{ number_format($shift->posSalesRecord->net_cash_sales, 2) }} {{ $shift->posSalesRecord->currency }}</strong></p>
             @if($shift->posSalesRecord->isLocked())
                 <p class="text-sm text-gray-500">Locked at {{ $shift->posSalesRecord->locked_at?->format('M d, H:i') }}</p>
             @else
-                <form method="POST" action="{{ route('shifts.pos.lock', $shift) }}" class="inline">@csrf<button type="submit" class="rounded bg-amber-600 px-3 py-1 text-white text-sm">Lock POS</button></form>
+                <form method="POST" action="{{ route('shifts.pos.lock', $shift) }}" class="inline">@csrf<button type="submit" class="rounded bg-amber-600 px-3 py-1 text-white text-sm">Lock expected amount</button></form>
             @endif
         @else
             <form method="POST" action="{{ route('shifts.pos.store', $shift) }}" class="max-w-sm space-y-2">
                 @csrf
                 <div>
-                    <label class="block text-sm">Net cash sales</label>
-                    <input type="number" name="net_cash_sales" step="0.01" required class="w-full rounded border-gray-300" value="{{ old('net_cash_sales') }}">
+                    <label class="block text-sm">Net cash sales (from your POS or manual)</label>
+                    <input type="number" name="net_cash_sales" step="0.01" required class="w-full rounded border-gray-300" value="{{ old('net_cash_sales') }}" placeholder="Total cash the till should have">
                     @error('net_cash_sales')<p class="text-sm text-red-600">{{ $message }}</p>@enderror
                 </div>
-                <button type="submit" class="rounded bg-gray-800 px-4 py-2 text-white">Save POS</button>
+                <button type="submit" class="rounded bg-gray-800 px-4 py-2 text-white">Save expected amount</button>
             </form>
         @endif
     </section>
 
-    {{-- Cash count --}}
+    {{-- Actual cash (physically counted) --}}
     <section class="mb-8 rounded-lg border bg-white p-4 shadow-sm">
-        <h2 class="mb-4 font-semibold">Cash count (actual)</h2>
+        <h2 class="mb-4 font-semibold">Actual cash counted</h2>
+        <p class="mb-2 text-sm text-gray-500">Enter the amount physically counted in the till at shift end.</p>
         @if($shift->cashCount)
             <p class="mb-2">Total counted: <strong>{{ number_format($shift->cashCount->total_amount, 2) }}</strong></p>
             @if($shift->cashCount->isLocked())
@@ -56,7 +58,7 @@
                     <input type="hidden" name="denominations[0][denomination_value]" value="1">
                     <input type="number" name="denominations[0][quantity]" step="0.01" min="0" required placeholder="e.g. 5000" class="w-full rounded border-gray-300" value="{{ old('denominations.0.quantity') }}">
                 </div>
-                <button type="submit" class="rounded bg-gray-800 px-4 py-2 text-white">Save cash count</button>
+                <button type="submit" class="rounded bg-gray-800 px-4 py-2 text-white">Save actual count</button>
             </form>
         @endif
     </section>

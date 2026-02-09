@@ -12,6 +12,7 @@
             <div class="flex h-16 justify-between">
                 <div class="flex items-center gap-8">
                     <a href="{{ route('dashboard') }}" class="font-semibold">{{ config('app.name') }}</a>
+                    <span class="text-xs text-gray-500">— Cash reconciliation &amp; money control</span>
                     <a href="{{ route('dashboard') }}" class="text-sm text-gray-600 hover:text-gray-900">Dashboard</a>
                     <a href="{{ route('branches.index') }}" class="text-sm text-gray-600 hover:text-gray-900">Branches</a>
                     <a href="{{ route('shifts.index') }}" class="text-sm text-gray-600 hover:text-gray-900">Shifts</a>

@@ -13,11 +13,11 @@ class PosEntryService
     public function recordPosTotals(Shift $shift, array $data, User $enteredBy): PosSalesRecord
     {
         if (! $shift->isOpen() && $shift->status->value !== 'closed') {
-            throw new \InvalidArgumentException('POS can only be entered for an open or recently closed shift.');
+            throw new \InvalidArgumentException('Expected cash can only be entered for an open or recently closed shift.');
         }
 
         if ($shift->posSalesRecord()->exists() && $shift->posSalesRecord->isLocked()) {
-            throw new \InvalidArgumentException('POS record for this shift is already locked.');
+            throw new \InvalidArgumentException('Expected amount for this shift is already locked.');
         }
 
         $netCashSales = (float) ($data['net_cash_sales'] ?? 0);
@@ -49,7 +49,7 @@ class PosEntryService
     public function lockPosRecord(PosSalesRecord $record): PosSalesRecord
     {
         if ($record->isLocked()) {
-            throw new \InvalidArgumentException('POS record is already locked.');
+            throw new \InvalidArgumentException('Expected amount is already locked.');
         }
 
         $record->update(['locked_at' => now()]);

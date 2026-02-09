@@ -19,7 +19,7 @@ class PosSalesRecordController extends Controller
 
         $this->posEntryService->recordPosTotals($shift, $request->validated(), $request->user());
 
-        return redirect()->route('shifts.show', $shift)->with('success', 'POS totals recorded.');
+        return redirect()->route('shifts.show', $shift)->with('success', 'Expected cash amount recorded.');
     }
 
     public function lock(Shift $shift): RedirectResponse
@@ -28,11 +28,11 @@ class PosSalesRecordController extends Controller
 
         $record = $shift->posSalesRecord;
         if (! $record) {
-            return redirect()->route('shifts.show', $shift)->with('error', 'No POS record to lock.');
+            return redirect()->route('shifts.show', $shift)->with('error', 'No expected amount recorded yet.');
         }
 
         $this->posEntryService->lockPosRecord($record);
 
-        return redirect()->route('shifts.show', $shift)->with('success', 'POS record locked.');
+        return redirect()->route('shifts.show', $shift)->with('success', 'Expected amount locked.');
     }
 }

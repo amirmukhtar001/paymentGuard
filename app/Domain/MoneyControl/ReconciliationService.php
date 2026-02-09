@@ -22,11 +22,11 @@ class ReconciliationService
         $cashCount = $shift->cashCount;
 
         if (! $posRecord || ! $posRecord->isLocked()) {
-            throw new \InvalidArgumentException('Shift must have a locked POS sales record before reconciliation.');
+            throw new \InvalidArgumentException('Shift must have a locked expected amount before reconciliation.');
         }
 
         if (! $cashCount || ! $cashCount->isLocked()) {
-            throw new \InvalidArgumentException('Shift must have a locked cash count before reconciliation.');
+            throw new \InvalidArgumentException('Shift must have a locked actual count before reconciliation.');
         }
 
         $expectedAmount = (float) $posRecord->net_cash_sales;

@@ -19,7 +19,7 @@ class CashCountController extends Controller
 
         $this->cashCountService->recordCashCount($shift, $request->validated(), $request->user());
 
-        return redirect()->route('shifts.show', $shift)->with('success', 'Cash count recorded.');
+        return redirect()->route('shifts.show', $shift)->with('success', 'Actual cash count recorded.');
     }
 
     public function lock(Shift $shift): RedirectResponse
@@ -28,11 +28,11 @@ class CashCountController extends Controller
 
         $cashCount = $shift->cashCount;
         if (! $cashCount) {
-            return redirect()->route('shifts.show', $shift)->with('error', 'No cash count to lock.');
+            return redirect()->route('shifts.show', $shift)->with('error', 'No actual count entered yet.');
         }
 
         $this->cashCountService->submitAndLockCashCount($cashCount);
 
-        return redirect()->route('shifts.show', $shift)->with('success', 'Cash count locked.');
+        return redirect()->route('shifts.show', $shift)->with('success', 'Actual count locked.');
     }
 }
