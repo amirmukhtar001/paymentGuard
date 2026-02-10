@@ -19,6 +19,7 @@ class MenusTableSeeder extends Seeder
             ['id' => 9, 'parent_id' => null, 'title' => 'Organization Types', 'description' => null, 'icon' => 'bx bx-category-alt', 'order' => 7, 'is_collapsible' => 'no'],
             ['id' => 10, 'parent_id' => null, 'title' => 'User Logs', 'description' => null, 'icon' => 'bx bx-history', 'order' => 8, 'is_collapsible' => 'no'],
             ['id' => 11, 'parent_id' => null, 'title' => 'Settings', 'description' => null, 'icon' => 'bx bx-wrench', 'order' => 9, 'is_collapsible' => 'no'],
+            ['id' => 12, 'parent_id' => null, 'title' => 'Money Control', 'description' => 'Business, branches, shifts, reconciliations', 'icon' => 'bx bx-wallet', 'order' => 10, 'is_collapsible' => 'no'],
         ];
 
         $now = now();

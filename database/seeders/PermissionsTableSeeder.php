@@ -52,6 +52,12 @@ class PermissionsTableSeeder extends Seeder
             ['id' => 31, 'name' => 'View user logs', 'slug' => 'settings.user_logs.view', 'description' => null, 'model' => 'UserLog', 'menu_id' => 10, 'show_in_menu' => 'yes'],
             // Settings (menu_id 11)
             ['id' => 32, 'name' => 'Edit settings', 'slug' => 'settings.settings.edit', 'description' => null, 'model' => 'Setting', 'menu_id' => 11, 'show_in_menu' => 'yes'],
+            // Money Control (menu_id 12)
+            ['id' => 33, 'name' => 'View dashboard', 'slug' => 'money.dashboard.view', 'description' => null, 'model' => 'Dashboard', 'menu_id' => 12, 'show_in_menu' => 'yes'],
+            ['id' => 34, 'name' => 'View branches', 'slug' => 'money.branches.view', 'description' => null, 'model' => 'Branch', 'menu_id' => 12, 'show_in_menu' => 'yes'],
+            ['id' => 35, 'name' => 'View shifts', 'slug' => 'money.shifts.view', 'description' => null, 'model' => 'Shift', 'menu_id' => 12, 'show_in_menu' => 'yes'],
+            ['id' => 36, 'name' => 'View reconciliations', 'slug' => 'money.reconciliations.view', 'description' => null, 'model' => 'Reconciliation', 'menu_id' => 12, 'show_in_menu' => 'yes'],
+            ['id' => 37, 'name' => 'Manage business setup', 'slug' => 'money.business.manage', 'description' => null, 'model' => 'Business', 'menu_id' => 12, 'show_in_menu' => 'yes'],
         ];
 
         foreach ($permissions as $p) {
