@@ -17,6 +17,26 @@
                     <a href="{{ route('branches.index') }}" class="text-sm text-gray-600 hover:text-gray-900">Branches</a>
                     <a href="{{ route('shifts.index') }}" class="text-sm text-gray-600 hover:text-gray-900">Shifts</a>
                     <a href="{{ route('reconciliations.index') }}" class="text-sm text-gray-600 hover:text-gray-900">Reconciliations</a>
+                    <div class="relative group">
+                        <button type="button" class="text-sm text-gray-600 hover:text-gray-900 focus:outline-none">Settings ▾</button>
+                        <div class="absolute left-0 mt-1 w-52 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 hidden group-hover:block z-50">
+                            <div class="py-1">
+                                @can('users.mgt.list')
+                                <a href="{{ route('settings.users-mgt.list') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Users</a>
+                                @endcan
+                                <a href="{{ route('settings.my-roles.list') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Roles</a>
+                                <a href="{{ route('settings.my-permissions.list') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Permissions</a>
+                                <a href="{{ route('settings.menus.list') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Menus</a>
+                                <a href="{{ route('settings.companies.list') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Companies</a>
+                                <a href="{{ route('settings.company-types.list') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Company Types</a>
+                                <a href="{{ route('settings.sections.list') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sections</a>
+                                <a href="{{ route('settings.user_logs.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">User Logs</a>
+                                @can('settings.settings.edit')
+                                <a href="{{ route('settings.settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">App Settings</a>
+                                @endcan
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex items-center gap-4">
                     <span class="text-sm text-gray-500">{{ auth()->user()?->name }}</span>

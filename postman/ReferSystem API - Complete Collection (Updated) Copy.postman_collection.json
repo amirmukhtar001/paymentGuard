@@ -1,0 +1,1034 @@
+{
+	"info": {
+		"_postman_id": "f699c0b1-4769-4f04-acad-4b76e50b2e2c",
+		"name": "ReferSystem API - Complete Collection (Updated) Copy",
+		"description": "Updated API collection for ReferSystem module with Many-to-Many relationships, hospital units, and patient referral management. Includes authentication, profile management, hospitals, units, doctors, patients, and referrals endpoints.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13567257",
+		"_collection_link": "https://warped-shuttle-413832.postman.co/workspace/IteachTrack-~1f566a63-0e4c-474f-8350-8d38186abb51/collection/13567257-f699c0b1-4769-4f04-acad-4b76e50b2e2c?action=share&source=collection_link&creator=13567257"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Token set karna",
+									"let response = pm.response.json();",
+									"// pm.environment.set(\"bearer_token\", response.data.token);",
+									"pm.collectionVariables.set('bearer_token',response.data.token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Dr. Ahmed Khan\",\n    \"email\": \"ahmedb.khan1@lrh.edu.pk\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"phone\": \"+92-300-0000000\",\n    \"designation\": \"Senior Cardiologist\",\n    \"specialization\": \"Interventional Cardiology\",\n    \"company_id\": 1,\n    \"section_id\": 1,\n    \"license_number\": \"PMC-12345\",\n    \"experience_years\": 8,\n    \"qualifications\": \"MBBS, MD Cardiology, FCPS\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user account"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Token set karna",
+									"let response = pm.response.json();",
+									"// pm.environment.set(\"bearer_token\", response.data.token);",
+									"pm.collectionVariables.set('bearer_token',response.data.token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"LAD-EMER-DKhan2\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login with email and password. Token will be automatically saved to environment."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						},
+						"description": "Get authenticated user profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Logout current session"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/refresh-token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						},
+						"description": "Refresh authentication token"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Diagnoses",
+			"item": [
+				{
+					"name": "Get All Diagnoses Grouped",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/refer/diagnoses/grouped",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refer",
+								"diagnoses",
+								"grouped"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Diagnoses by Section Grouped",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/refer/diagnoses/sections/{{section_id}}/grouped",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refer",
+								"diagnoses",
+								"sections",
+								"{{section_id}}",
+								"grouped"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hospitals",
+			"item": [
+				{
+					"name": "Get All Hospitals",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/refer/hospitals?page=1&per_page=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refer",
+								"hospitals"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "search",
+									"value": "Lady",
+									"description": "Search hospital by name",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Get paginated list of all hospitals in KPK with search functionality"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hospital Units",
+			"item": [
+				{
+					"name": "Get Units by Hospital",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/refer/hospitals/3/units?page=1&per_page=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refer",
+								"hospitals",
+								"3",
+								"units"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "50"
+								},
+								{
+									"key": "search",
+									"value": "Cardiology",
+									"description": "Search units by name",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all units/departments for a specific hospital using many-to-many relationship"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Doctors",
+			"item": [
+				{
+					"name": "Get Doctors by Unit",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/refer/units/{{unit_id}}/doctors?per_page=50&hospital_id=122",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refer",
+								"units",
+								"{{unit_id}}",
+								"doctors"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "50"
+								},
+								{
+									"key": "search",
+									"value": "Dr",
+									"description": "Search doctors by name",
+									"disabled": true
+								},
+								{
+									"key": "hospital_id",
+									"value": "122"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all doctors in a specific unit/department"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Referrals",
+			"item": [
+				{
+					"name": "Get Referral Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/refer/referrals/126",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refer",
+								"referrals",
+								"126"
+							]
+						},
+						"description": "Get detailed information about a specific referral"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Referral Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "new_status_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "status_notes",
+									"value": "<p>Status changed to received. Patient documentation reviewed and complete.</p>",
+									"type": "text"
+								},
+								{
+									"key": "status_attachments[]",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/refer/referrals/{{referral_id}}/change-status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refer",
+								"referrals",
+								"{{referral_id}}",
+								"change-status"
+							]
+						},
+						"description": "Change the status of a referral with optional notes and attachments"
+					},
+					"response": []
+				},
+				{
+					"name": "Direct Patient Referral",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    // \"patient_id\": 125,\n    \"cnic\": \"12345-6789012-3\",\n    \"name\": \"Ahmad Khan\",\n    \"age\": 35,\n    \"gender\": \"male\",\n    \"received_by\":953,\n    \"address\": \"House 123, Street 5, Sector G-10, Islamabad\",\n    \"phone\": \"03001234567\",\n    \"to_organization_id\": 1,\n    \"to_department_id\": 1,\n    \"reason_for_referral\": \"Patient requires specialized cardiology consultation for persistent chest pain and irregular heartbeat\",\n    \"priority\": \"high\",\n    \"blood_pressure\": \"140/90\",\n    \"heart_rate\": \"85\",\n    \"oxygen_saturation\": \"97\",\n    \"glasgow_coma_scale\": \"15\",\n    \"pupils\": \"Equal and reactive\",\n    \"airway\": \"Clear\",\n    \"referring_hospital_dept\": \"Emergency Department\",\n    \"referring_resident_doctor\": \"Dr. Ali Hassan\",\n    \"on_call_consultant\": \"Dr. Sara Ahmed\",\n    \"medical_summary\": \"Patient presented with chest pain radiating to left arm, history of hypertension\",\n    \"diagnosis\": \"Suspected Acute Coronary Syndrome\",\n    \"treatment_given\": \"Aspirin 300mg, IV access established, oxygen support\",\n    \"current_medications\": [\n        \"Metformin 500mg BD\",\n        \"Atenolol 50mg OD\",\n        \"Aspirin 75mg OD\"\n    ],\n    \"vital_signs\": {\n        \"temperature\": \"98.6 F\",\n        \"respiratory_rate\": \"18\",\n        \"spo2\": \"97%\",\n        \"blood_sugar\": \"145 mg/dl\"\n    },\n    \"notes\": \"Patient stable but requires urgent cardiology evaluation. Family informed.\",\n    \"follow_up_required\": true,\n    \"follow_up_date\": \"2025-10-25\",\n    \"other_diagnosis\": \"Type 2 Diabetes Mellitus, Hypertension\",\n    \"further_treatment_required\": \"ECG, Cardiac enzymes, Echocardiography\",\n    \"comorbidities\": [1, 2],\n    \"diagnoses\": [1,2]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/refer/direct-referral",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refer",
+								"direct-referral"
+							]
+						},
+						"description": "Create patient and referral in one step for emergency cases"
+					},
+					"response": []
+				},
+				{
+					"name": "outgoing-referrals",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/refer/outgoing-referrals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refer",
+								"outgoing-referrals"
+							],
+							"query": [
+								{
+									"key": "priority",
+									"value": "urgent",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "20",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "incoming-referrals",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/refer/incoming-referrals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refer",
+								"incoming-referrals"
+							],
+							"query": [
+								{
+									"key": "action_type",
+									"value": "received",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "Ahmad",
+									"disabled": true
+								},
+								{
+									"key": "priority",
+									"value": "urgent",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "20",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "System Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check if ReferSystem API is working properly"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Firebase Push Notifications",
+			"item": [
+				{
+					"name": "Save Firebase Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Token saved successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});",
+									"",
+									"// Save token ID for later use",
+									"let response = pm.response.json();",
+									"if (response.success && response.data && response.data.token_id) {",
+									"    pm.collectionVariables.set('firebase_token_id', response.data.token_id);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firebase_token\": \"{{firebase_fcm_token}}\",\n    \"app_name\": \"doctor_app\",\n    \"module_name\": \"ReferSystem\",\n    \"device_type\": \"android\",\n    \"device_id\": \"{{device_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/firebase/tokens",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"firebase",
+								"tokens"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Firebase Tokens",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/firebase/tokens?app_name=doctor_app&active_only=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"firebase",
+								"tokens"
+							],
+							"query": [
+								{
+									"key": "app_name",
+									"value": "doctor_app"
+								},
+								{
+									"key": "active_only",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Test Notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Notification sent successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\\n    \\\"app_name\\\": \\\"doctor_app\\\",\\n    \\\"module_name\\\": \\\"ReferSystem\\\",\\n    \\\"title\\\": \\\"🏥 New Referral Alert\\\",\\n    \\\"body\\\": \\\"You have received a new referral. Please check your dashboard for details.\\\"\\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/firebase/test-notification",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"firebase",
+								"test-notification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Referral Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\\n    \\\"app_name\\\": \\\"doctor_app\\\",\\n    \\\"module_name\\\": \\\"ReferSystem\\\",\\n    \\\"title\\\": \\\"🩺 Urgent Referral - {{patient_name}}\\\",\\n    \\\"body\\\": \\\"Priority referral for {{patient_name}} ({{patient_age}} years) requires immediate attention. Diagnosis: {{diagnosis}}. Please review within 2 hours.\\\"\\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/firebase/test-notification",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"firebase",
+								"test-notification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate Firebase Token",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/firebase/tokens/{{firebase_token_id}}/deactivate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"firebase",
+								"tokens",
+								"{{firebase_token_id}}",
+								"deactivate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Firebase Token",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/firebase/tokens/{{firebase_token_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"firebase",
+								"tokens",
+								"{{firebase_token_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/firebase/stats?app_name=doctor_app",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"firebase",
+								"stats"
+							],
+							"query": [
+								{
+									"key": "app_name",
+									"value": "doctor_app"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Common",
+			"item": [
+				{
+					"name": "comorbidities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/refer/comorbidities",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refer",
+								"comorbidities"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearer_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"requests": {},
+				"exec": [
+					"// Auto-set content type for requests with body",
+					"if (pm.request.body && pm.request.body.mode === 'raw') {",
+					"    pm.request.headers.add({",
+					"        key: 'Content-Type',",
+					"        value: 'application/json'",
+					"    });",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"requests": {},
+				"exec": [
+					"// Auto-save bearer token from login responses",
+					"if (pm.response.code === 200 || pm.response.code === 201) {",
+					"    const responseJson = pm.response.json();",
+					"    if (responseJson.data && responseJson.data.token) {",
+					"        pm.environment.set('bearer_token', responseJson.data.token);",
+					"        console.log('🔐 Token automatically saved to environment');",
+					"    }",
+					"    if (responseJson.data && responseJson.data.user) {",
+					"        pm.environment.set('user_id', responseJson.data.user.id);",
+					"        pm.environment.set('user_email', responseJson.data.user.email);",
+					"        pm.environment.set('user_name', responseJson.data.user.name);",
+					"        console.log('👤 User data automatically saved to environment');",
+					"    }",
+					"}",
+					"",
+					"// Test response structure and save IDs",
+					"pm.test('Response should be JSON', function () {",
+					"    pm.response.to.be.json;",
+					"});",
+					"",
+					"if (pm.response.json().data) {",
+					"    const data = pm.response.json().data;",
+					"    if (data.hospitals && data.hospitals[0]) {",
+					"        pm.environment.set('hospital_id', data.hospitals[0].id);",
+					"    }",
+					"    if (data.units && data.units[0]) {",
+					"        pm.environment.set('unit_id', data.units[0].id);",
+					"    }",
+					"    if (data.doctors && data.doctors[0]) {",
+					"        pm.environment.set('doctor_id', data.doctors[0].id);",
+					"    }",
+					"    if (data.id) {",
+					"        pm.environment.set('patient_id', data.id);",
+					"    }",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api/refer-system/v1"
+		},
+		{
+			"key": "bearer_token",
+			"value": ""
+		},
+		{
+			"key": "user_id",
+			"value": ""
+		},
+		{
+			"key": "user_email",
+			"value": ""
+		},
+		{
+			"key": "user_name",
+			"value": ""
+		},
+		{
+			"key": "hospital_id",
+			"value": "1"
+		},
+		{
+			"key": "unit_id",
+			"value": "1"
+		},
+		{
+			"key": "doctor_id",
+			"value": "1"
+		},
+		{
+			"key": "patient_id",
+			"value": ""
+		},
+		{
+			"key": "referral_id",
+			"value": ""
+		},
+		{
+			"key": "section_id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "",
+			"disabled": true
+		},
+		{
+			"key": "firebase_token_id",
+			"value": ""
+		},
+		{
+			"key": "firebase_fcm_token",
+			"value": "fGzVq1234567890abcdefghijklmnopqrstuvwxyz"
+		},
+		{
+			"key": "device_id",
+			"value": "android_device_12345"
+		},
+		{
+			"key": "patient_name",
+			"value": "Muhammad Ali"
+		},
+		{
+			"key": "patient_age",
+			"value": "45"
+		},
+		{
+			"key": "diagnosis",
+			"value": "Chest Pain - Rule out MI"
+		}
+	]
+}

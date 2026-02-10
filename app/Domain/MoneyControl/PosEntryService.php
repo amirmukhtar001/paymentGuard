@@ -15,19 +15,15 @@ class PosEntryService
         if (! $shift->isOpen() && $shift->status->value !== 'closed') {
             throw new \InvalidArgumentException('Expected cash can only be entered for an open or recently closed shift.');
         }
-
         if ($shift->posSalesRecord()->exists() && $shift->posSalesRecord->isLocked()) {
             throw new \InvalidArgumentException('Expected amount for this shift is already locked.');
         }
-
         $netCashSales = (float) ($data['net_cash_sales'] ?? 0);
         $salesGross = (float) ($data['sales_gross'] ?? $netCashSales);
         $discounts = (float) ($data['discounts'] ?? 0);
         $returns = (float) ($data['returns'] ?? 0);
-
         $record = DB::transaction(function () use ($shift, $enteredBy, $salesGross, $discounts, $returns, $netCashSales, $data) {
             $shift->posSalesRecord()->delete();
-
             return PosSalesRecord::query()->create([
                 'business_id' => $shift->business_id,
                 'branch_id' => $shift->branch_id,
@@ -42,7 +38,6 @@ class PosEntryService
                 'entered_by' => $enteredBy->id,
             ]);
         });
-
         return $record->load(['shift', 'enteredBy']);
     }
 
@@ -51,9 +46,7 @@ class PosEntryService
         if ($record->isLocked()) {
             throw new \InvalidArgumentException('Expected amount is already locked.');
         }
-
         $record->update(['locked_at' => now()]);
-
         return $record->fresh();
     }
 }

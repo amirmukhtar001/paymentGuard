@@ -3,65 +3,110 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoleAndPermission, SoftDeletes;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'business_id',
-        'role',
-        'is_active',
-    ];
+    protected $connection = 'mysql';
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    protected function casts(): array
+    protected $fillable = [
+        'name',
+        'designation',
+        'email',
+        'username',
+        'password',
+        'company_id',
+        'section_id',
+        'parent_id',
+        'contact_number',
+        'description',
+        'status',
+        'verified_by',
+        'verified_at',
+        'business_id',
+        'role',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'verified_at' => 'datetime',
+        'otp_time' => 'datetime',
+        'role' => UserRole::class,
+        'is_active' => 'boolean',
+    ];
+
+    public function roles()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'role' => UserRole::class,
-            'is_active' => 'boolean',
-        ];
+        return $this->belongsToMany(MyRole::class, 'role_user', 'user_id', 'role_id')->withTimestamps();
     }
 
-    public function business(): BelongsTo
+    public function permissions()
+    {
+        return $this->belongsToMany(MyPermission::class, 'permission_user', 'user_id', 'permission_id')->withTimestamps();
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id', 'id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(User::class, 'parent_id', 'id');
+    }
+
+    public function verifiedBy()
+    {
+        return $this->belongsTo(User::class, 'verified_by', 'id');
+    }
+
+    public function business()
     {
         return $this->belongsTo(Business::class);
     }
 
-    public function ownedBusinesses(): HasMany
+    public function ownedBusinesses()
     {
         return $this->hasMany(Business::class, 'owner_id');
     }
 
-    public function branches(): BelongsToMany
+    public function branches()
     {
         return $this->belongsToMany(Branch::class, 'branch_user')
             ->withPivot(['role', 'is_primary'])
             ->withTimestamps();
     }
 
-    public function shiftsAsCashier(): HasMany
+    public function shiftsAsCashier()
     {
         return $this->hasMany(Shift::class, 'cashier_id');
     }
 
-    public function shiftsAsManager(): HasMany
+    public function shiftsAsManager()
     {
         return $this->hasMany(Shift::class, 'manager_id');
     }

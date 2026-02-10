@@ -1,0 +1,21 @@
+/* Custom Dark Theme Overrides */
+.dark-style {
+    /* Your custom dark mode styles */
+}
+
+.dark-style .card {
+    background-color: #2b2c40;
+    border-color: #3b3d51;
+}
+
+.dark-style .menu-vertical {
+    background-color: #25293c;
+}
+
+.dark-style .layout-navbar {
+    background-color: #2b2c40 !important;
+}
+
+.dark-style .content-footer {
+    background-color: #2b2c40 !important;
+}

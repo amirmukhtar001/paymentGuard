@@ -14,12 +14,15 @@ return [
     |
     */
 
-    'postmark' => [
-        'key' => env('POSTMARK_API_KEY'),
+    'mailgun' => [
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
+        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'scheme' => 'https',
     ],
 
-    'resend' => [
-        'key' => env('RESEND_API_KEY'),
+    'postmark' => [
+        'token' => env('POSTMARK_TOKEN'),
     ],
 
     'ses' => [
@@ -28,11 +31,16 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'slack' => [
-        'notifications' => [
-            'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
-            'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
-        ],
+
+    'veevotech' => [
+        'base_uri' => env('VEEVOTECH_BASE_URI'),
+        'hash' => env('VEEVOTECH_HASH'),
+        'medium' => env('VEEVOTECH_MEDIUM'),
+        'sendernum' => env('VEEVOTECH_SENDERNUM'),
+    ],
+
+    'kissan' => [
+        'base_url' => env('KISSAN_API_BASE_URL', 'https://balochistankissan.gob.pk/admin'),
     ],
 
 ];
