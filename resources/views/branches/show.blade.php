@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.' . config('settings.active_layout'))
 
 @section('title', $branch->name)
 
