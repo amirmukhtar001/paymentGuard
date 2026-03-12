@@ -19,7 +19,8 @@ class BranchPolicy
 
     public function create(User $user): bool
     {
-        return $user->isOwner() || $user->isManager();
+        // Allow any user that belongs to a business to create branches
+        return $user->business_id !== null;
     }
 
     public function update(User $user, Branch $branch): bool

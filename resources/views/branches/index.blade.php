@@ -6,11 +6,9 @@
     <div class="row mb-3">
         <div class="col-12 d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Branches</h4>
-            @can('create', App\Models\Branch::class)
-                <a href="{{ route('branches.create') }}" class="btn btn-primary">
-                    <i class="bx bx-plus me-1"></i> Add branch
-                </a>
-            @endcan
+            <a href="{{ route('branches.create') }}" class="btn btn-primary">
+                <i class="bx bx-plus me-1"></i> Add branch
+            </a>
         </div>
     </div>
 
