@@ -3,34 +3,56 @@
 @section('title', 'Reconciliations')
 
 @section('content')
-    <h1 class="mb-6 text-2xl font-bold">Reconciliations</h1>
-    <div class="overflow-hidden rounded-lg border bg-white shadow-sm">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Date</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Branch</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Cashier</th>
-                    <th class="px-4 py-2 text-right text-xs font-medium text-gray-500">Difference</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Status</th>
-                    <th class="px-4 py-2"></th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-                @forelse($reconciliations as $rec)
-                    <tr>
-                        <td class="px-4 py-2 text-sm">{{ $rec->created_at->format('M d, Y') }}</td>
-                        <td class="px-4 py-2 text-sm">{{ $rec->branch->name }}</td>
-                        <td class="px-4 py-2 text-sm">{{ $rec->shift->cashier->name ?? '-' }}</td>
-                        <td class="px-4 py-2 text-right text-sm {{ $rec->difference_type->value === 'short' ? 'text-red-600' : '' }}">{{ number_format($rec->difference_amount, 2) }}</td>
-                        <td class="px-4 py-2 text-sm">{{ $rec->status->value }}</td>
-                        <td class="px-4 py-2"><a href="{{ route('reconciliations.show', $rec) }}" class="text-blue-600 hover:underline">View</a></td>
-                    </tr>
-                @empty
-                    <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No reconciliations yet.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
-        {{ $reconciliations->links() }}
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Reconciliations</h4>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Branch</th>
+                            <th>Cashier</th>
+                            <th class="text-end">Difference</th>
+                            <th>Status</th>
+                            <th class="text-center" style="width: 120px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($reconciliations as $rec)
+                            <tr>
+                                <td>{{ $rec->created_at->format('M d, Y') }}</td>
+                                <td>{{ $rec->branch->name }}</td>
+                                <td>{{ $rec->shift->cashier->name ?? '-' }}</td>
+                                <td class="text-end
+                                    {{ $rec->difference_type->value === 'short' ? 'text-danger' : '' }}">
+                                    {{ number_format($rec->difference_amount, 2) }}
+                                </td>
+                                <td>{{ ucfirst($rec->status->value) }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('reconciliations.show', $rec) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bx bx-show"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    No reconciliations yet.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                {{ $reconciliations->links() }}
+            </div>
+        </div>
     </div>
 @endsection

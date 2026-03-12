@@ -3,70 +3,115 @@
 @section('title', 'Cash reconciliation dashboard')
 
 @section('content')
-    <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-bold">Cash reconciliation</h1>
-            <p class="text-sm text-gray-500">Expected vs actual cash by shift — spot mismatches and hold staff accountable.</p>
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h4 class="mb-1">Cash reconciliation</h4>
+            <p class="text-muted mb-0">
+                Expected vs actual cash by shift — quickly spot mismatches and hold staff accountable.
+            </p>
         </div>
-        <form method="get" action="{{ route('dashboard') }}" class="flex gap-2">
-            <input type="date" name="from" value="{{ $from->format('Y-m-d') }}" class="rounded border-gray-300">
-            <input type="date" name="to" value="{{ $to->format('Y-m-d') }}" class="rounded border-gray-300">
-            <button type="submit" class="rounded bg-gray-800 px-4 py-2 text-white">Filter</button>
-        </form>
-    </div>
-
-    <div class="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div class="rounded-lg border bg-white p-4 shadow-sm">
-            <div class="text-sm text-gray-500">Total shifts</div>
-            <div class="text-2xl font-semibold">{{ $summary['total_shifts'] }}</div>
-        </div>
-        <div class="rounded-lg border bg-white p-4 shadow-sm">
-            <div class="text-sm text-gray-500">Balanced</div>
-            <div class="text-2xl font-semibold text-green-600">{{ $summary['balanced_count'] }}</div>
-        </div>
-        <div class="rounded-lg border bg-white p-4 shadow-sm">
-            <div class="text-sm text-gray-500">Short (count / amount)</div>
-            <div class="text-2xl font-semibold text-red-600">{{ $summary['short_count'] }} / {{ number_format($summary['short_total_amount'], 2) }} PKR</div>
-        </div>
-        <div class="rounded-lg border bg-white p-4 shadow-sm">
-            <div class="text-sm text-gray-500">Over (count / amount)</div>
-            <div class="text-2xl font-semibold text-amber-600">{{ $summary['over_count'] }} / {{ number_format($summary['over_total_amount'], 2) }} PKR</div>
+        <div class="col-md-4">
+            <form method="get" action="{{ route('dashboard') }}" class="row g-2 justify-content-md-end">
+                <div class="col-6">
+                    <label class="form-label mb-1">From</label>
+                    <input type="date" name="from" value="{{ $from->format('Y-m-d') }}" class="form-control">
+                </div>
+                <div class="col-6">
+                    <label class="form-label mb-1">To</label>
+                    <div class="input-group">
+                        <input type="date" name="to" value="{{ $to->format('Y-m-d') }}" class="form-control">
+                        <button type="submit" class="btn btn-primary ms-1">
+                            <i class="bx bx-filter-alt me-1"></i> Filter
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
-    <section class="mb-8">
-        <h2 class="mb-4 text-lg font-semibold">Recent reconciliations</h2>
-        <div class="overflow-hidden rounded-lg border bg-white shadow-sm">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Date</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Branch</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Cashier</th>
-                        <th class="px-4 py-2 text-right text-xs font-medium text-gray-500">Expected</th>
-                        <th class="px-4 py-2 text-right text-xs font-medium text-gray-500">Actual</th>
-                        <th class="px-4 py-2 text-right text-xs font-medium text-gray-500">Difference</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    @forelse($summary['reconciliations']->take(10) as $rec)
-                        <tr>
-                            <td class="whitespace-nowrap px-4 py-2 text-sm">{{ $rec->created_at->format('M d, Y H:i') }}</td>
-                            <td class="px-4 py-2 text-sm">{{ $rec->branch->name }}</td>
-                            <td class="px-4 py-2 text-sm">{{ $rec->shift->cashier->name ?? '-' }}</td>
-                            <td class="px-4 py-2 text-right text-sm">{{ number_format($rec->expected_amount, 2) }}</td>
-                            <td class="px-4 py-2 text-right text-sm">{{ number_format($rec->actual_amount, 2) }}</td>
-                            <td class="px-4 py-2 text-right text-sm {{ $rec->difference_type->value === 'short' ? 'text-red-600' : ($rec->difference_type->value === 'over' ? 'text-amber-600' : '') }}">{{ number_format($rec->difference_amount, 2) }}</td>
-                            <td class="px-4 py-2 text-sm">{{ $rec->status->value }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="px-4 py-8 text-center text-gray-500">No reconciliations in this period.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="mb-1 text-muted text-uppercase small">Total shifts</p>
+                    <h3 class="mb-0">{{ $summary['total_shifts'] }}</h3>
+                </div>
+            </div>
         </div>
-    </section>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="mb-1 text-muted text-uppercase small">Balanced</p>
+                    <h3 class="mb-0 text-success">{{ $summary['balanced_count'] }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="mb-1 text-muted text-uppercase small">Short (count / amount)</p>
+                    <h3 class="mb-0 text-danger">
+                        {{ $summary['short_count'] }}
+                        <small class="text-muted">/ {{ number_format($summary['short_total_amount'], 2) }} PKR</small>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="mb-1 text-muted text-uppercase small">Over (count / amount)</p>
+                    <h3 class="mb-0 text-warning">
+                        {{ $summary['over_count'] }}
+                        <small class="text-muted">/ {{ number_format($summary['over_total_amount'], 2) }} PKR</small>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Recent reconciliations</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Branch</th>
+                            <th>Cashier</th>
+                            <th class="text-end">Expected</th>
+                            <th class="text-end">Actual</th>
+                            <th class="text-end">Difference</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($summary['reconciliations']->take(10) as $rec)
+                            <tr>
+                                <td>{{ $rec->created_at->format('M d, Y H:i') }}</td>
+                                <td>{{ $rec->branch->name }}</td>
+                                <td>{{ $rec->shift->cashier->name ?? '-' }}</td>
+                                <td class="text-end">{{ number_format($rec->expected_amount, 2) }}</td>
+                                <td class="text-end">{{ number_format($rec->actual_amount, 2) }}</td>
+                                <td class="text-end
+                                    {{ $rec->difference_type->value === 'short' ? 'text-danger' : ($rec->difference_type->value === 'over' ? 'text-warning' : '') }}">
+                                    {{ number_format($rec->difference_amount, 2) }}
+                                </td>
+                                <td>{{ ucfirst($rec->status->value) }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    No reconciliations in this period.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 @endsection

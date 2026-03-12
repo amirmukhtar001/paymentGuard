@@ -3,34 +3,51 @@
 @section('title', 'Branches')
 
 @section('content')
-    <div class="mb-6 flex items-center justify-between">
-        <h1 class="text-2xl font-bold">Branches</h1>
-        @can('create', App\Models\Branch::class)
-            <a href="{{ route('branches.create') }}" class="rounded bg-gray-800 px-4 py-2 text-white">Add branch</a>
-        @endcan
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Branches</h4>
+            @can('create', App\Models\Branch::class)
+                <a href="{{ route('branches.create') }}" class="btn btn-primary">
+                    <i class="bx bx-plus me-1"></i> Add branch
+                </a>
+            @endcan
+        </div>
     </div>
-    <div class="overflow-hidden rounded-lg border bg-white shadow-sm">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Name</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Code</th>
-                    <th class="px-4 py-2 text-right text-xs font-medium text-gray-500">Shifts</th>
-                    <th class="px-4 py-2"></th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-                @forelse($branches as $branch)
-                    <tr>
-                        <td class="px-4 py-2 font-medium">{{ $branch->name }}</td>
-                        <td class="px-4 py-2 text-gray-500">{{ $branch->code ?? '—' }}</td>
-                        <td class="px-4 py-2 text-right">{{ $branch->shifts_count }}</td>
-                        <td class="px-4 py-2"><a href="{{ route('branches.show', $branch) }}" class="text-blue-600 hover:underline">View</a></td>
-                    </tr>
-                @empty
-                    <tr><td colspan="4" class="px-4 py-8 text-center text-gray-500">No branches. Add one to get started.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th class="text-end">Shifts</th>
+                            <th class="text-center" style="width: 120px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($branches as $branch)
+                            <tr>
+                                <td class="fw-medium">{{ $branch->name }}</td>
+                                <td class="text-muted">{{ $branch->code ?? '—' }}</td>
+                                <td class="text-end">{{ $branch->shifts_count }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('branches.show', $branch) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bx bx-show"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">
+                                    No branches yet. Create your first branch to start tracking shifts.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection
